@@ -1,7 +1,7 @@
 #!/bin/bash
 
 
-echo $HOME
-echo $USER
 echo "CHECKING ENVIRONMENTS"
-set -e -x
+echo  PWD= $PWD
+echo  HOME= $HOME
+echo  USER= $USER
