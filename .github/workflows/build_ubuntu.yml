@@ -12,6 +12,8 @@ jobs:
     name: 'Setup depot tools and build skia'
     runs-on: ubuntu-latest
     steps:
+        - name: "install development packages"
+          run: sudo apt install build-essential clang
         - name: "Check out repo's default branch"
           uses: actions/checkout@v3
         - name: "change permission for build_ubuntu.sh"
