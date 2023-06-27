@@ -9,5 +9,7 @@ jobs:
     steps:
         - name: "Check out repo's default branch"
           uses: actions/checkout@v3
+        - name: "change permission for build_ubunut.sh"
+          run: chmod a+x build_ubuntu.sh
         - name: 'execute ubuntu script'
           run:  ./build_ubuntu.sh
