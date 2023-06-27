@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
         - name: "install development packages"
-          run: sudo apt install build-essential clang libfontconfig-dev libjpeg-dev libharfbuzz-dev mesa-common-dev
+          run: sudo apt install build-essential clang libfontconfig-dev libjpeg-dev libharfbuzz-dev libharfbuzz-subset0 mesa-common-dev
         - name: "Check out repo's default branch"
           uses: actions/checkout@v3
         - name: "change permission for build_ubuntu.sh"
