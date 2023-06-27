@@ -2,6 +2,11 @@ name: 'Build skia on ubuntu'
 on:
     workflow_dispatch:
     push:
+    
+permissions:
+  contents: read
+  issues: write
+  
 jobs:
   setup_depot_tools_and_build_skia:
     name: 'Setup depot tools and build skia'
@@ -9,7 +14,7 @@ jobs:
     steps:
         - name: "Check out repo's default branch"
           uses: actions/checkout@v3
-        - name: "change permission for build_ubunut.sh"
+        - name: "change permission for build_ubuntu.sh"
           run: chmod a+x build_ubuntu.sh
         - name: 'execute ubuntu script'
           run:  ./build_ubuntu.sh
