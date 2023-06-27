@@ -14,10 +14,23 @@ if [ -d "$DEPOT_TOOLS_DIR" ];
 then
     echo "$DEPOT_TOOLS_DIR directory exists. skipping depot_tools installation"
 else
-	  echo "$DEPOT_TOOLS_DIR directory does not exist. clonging depot_tools"
+    echo "$DEPOT_TOOLS_DIR directory does not exist. cloning depot_tools"
     git clone 'https://chromium.googlesource.com/chromium/tools/depot_tools.git'
 fi
 
 export PATH="${DEPOT_TOOLS_DIR}:${PATH}"
-echo PATH= $PATH
+echo PATH=$PATH
+
+SKIA_DIR=$HOME/skia
+if [ -d "$SKIA_DIR" ];
+then
+    echo "$SKIA_DIR directory exists. skipping skia fetch"
+else
+    echo "$SKIA_DIR directory does not exist. fetching skia"
+    fetch skia
+    cd ${SKIA_DIR}
+    python3 tools/git-sync-deps
+    bin/fetch-ninja
+fi
+
 popd
