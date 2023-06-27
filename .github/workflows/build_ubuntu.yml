@@ -1,0 +1,13 @@
+name: 'Build skia on ubuntu'
+on:
+    workflow_dispatch:
+
+jobs:
+  setup_depot_tools_and_build_skia:
+    name: 'Setup depot tools and build skia'
+    runs-on: ubuntu-latest
+    steps:
+        - name: "Check out repo's default branch"
+          uses: actions/checkout@v3
+        - name: 'execute ubuntu script'
+          run:  ./build_ubuntu.sh
