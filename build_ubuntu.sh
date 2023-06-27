@@ -38,5 +38,5 @@ git pull
 python3 tools/git-sync-deps
 tools/install_dependencies.sh
 bin/gn gen out/x64_linux --args='is_official_build=true'
-ninja -c out/x64_linux
+ninja -C out/x64_linux
 popd
