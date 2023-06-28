@@ -31,10 +31,15 @@ IF EXIST %SKIA_DIR%\ (
    fetch skia'
 )
 
-cd /d skia
+cd /d %SKIA_DIR%
 git pull
+ECHO CWD : %cd%
+ECHO 1
 python3 tools\git-sync-deps
+ECHO 2
 tools\install_dependencies.sh
+ECHO 3
 bin\gn gen out\x64_win --args="is_official_build=true skia_use_harfbuzz=false"
+ECHO 4
 ninja -C out\x64_win
-
+ECHO 5
