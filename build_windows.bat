@@ -28,7 +28,8 @@ IF EXIST %SKIA_DIR%\ (
    ECHO %SKIA_DIR% exists
 ) ELSE (
    ECHO %SKIA_DIR% does not exist. cloning skia
-   fetch skia'
+   fetch skia
+   ECHO skia fetch done
 )
 
 cd /d %SKIA_DIR%
