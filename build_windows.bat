@@ -16,7 +16,7 @@ IF EXIST %DEPOT_TOOLS_DIR%\ (
    ECHO %DEPOT_TOOLS_DIR% exists
 ) ELSE (
    ECHO %DEPOT_TOOLS_DIR% does not exist. cloning depot_tools
-   git clone 'https://chromium.googlesource.com/chromium/tools/depot_tools.git'
+   git clone https://chromium.googlesource.com/chromium/tools/depot_tools.git
 )
 
 set "PATH=%DEPOT_TOOLS_DIR%;%PATH%"
