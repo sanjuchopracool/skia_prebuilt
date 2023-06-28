@@ -20,13 +20,6 @@ IF EXIST %DEPOT_TOOLS_DIR%\ (
 )
 
 set "PATH=%DEPOT_TOOLS_DIR%;%PATH%"
-ECHO %PATH%
-
-ECHO CWD : %cd%
-cd /d %DEPOT_TOOLS_DIR% 
-ECHO CWD : %cd%
-dir
-cd /d %GOOGLE_DIR%
 
 ECHO CWD : %cd%
 set SKIA_DIR=%GOOGLE_DIR%\skia
@@ -39,6 +32,9 @@ IF EXIST %SKIA_DIR%\ (
 )
 
 cd /d skia
-python3 tools/git-sync-deps
-bin/fetch-ninja
+git pull
+python3 tools\git-sync-deps
+tools\install_dependencies.sh
+bin\gn gen out\x64_win --args="is_official_build=true skia_use_harfbuzz=false"
+ninja -C out\x64_win
 
