@@ -9,7 +9,7 @@ IF EXIST %GOOGLE_DIR%\ (
 )
 
 cd %GOOGLE_DIR%
-
+ECHO CWD : %cd%
 set DEPOT_TOOLS_DIR=%GOOGLE_DIR%\depot_tools
 
 IF EXIST %DEPOT_TOOLS_DIR%\ (
@@ -22,10 +22,13 @@ IF EXIST %DEPOT_TOOLS_DIR%\ (
 set "PATH=%DEPOT_TOOLS_DIR%;%PATH%"
 ECHO %PATH%
 
-
+ECHO CWD : %cd%
 cd %DEPOT_TOOLS_DIR% 
-DIR 
+ECHO CWD : %cd%
+dir
 cd %GOOGLE_DIR%
+
+ECHO CWD : %cd%
 set SKIA_DIR=%GOOGLE_DIR%\skia
 
 IF EXIST %SKIA_DIR%\ (
