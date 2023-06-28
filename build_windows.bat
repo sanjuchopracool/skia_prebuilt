@@ -32,11 +32,11 @@ IF EXIST %SKIA_DIR%\ (
 )
 ECHO skia fetch done
 cd /d %SKIA_DIR%
+ECHO "syncing tools"
+python3 tools\git-sync-deps
 ECHO syncing skia
 git pull
 ECHO CWD : %cd%
-ECHO "syncing tools"
-python3 tools\git-sync-deps
 ECHO "installing dependencies"
 tools\install_dependencies.sh
 bin\gn gen out\x64_win --args="is_official_build=true skia_use_harfbuzz=false"
