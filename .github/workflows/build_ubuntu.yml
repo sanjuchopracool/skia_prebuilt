@@ -1,7 +1,6 @@
 name: 'Build skia on ubuntu'
 on:
     workflow_dispatch:
-    push:
     
 permissions:
   contents: read
