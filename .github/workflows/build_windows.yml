@@ -15,4 +15,4 @@ jobs:
         - name: "Check out repo's default branch"
           uses: actions/checkout@v3
         - name: 'execute windows batch file'
-          run:  build_windows.bat
+          run:  cmd /c "build_windows.bat"
