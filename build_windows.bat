@@ -8,7 +8,7 @@ IF EXIST %GOOGLE_DIR%\ (
    mkdir %GOOGLE_DIR%
 )
 
-cd %GOOGLE_DIR%
+cd /d %GOOGLE_DIR%
 ECHO CWD : %cd%
 set DEPOT_TOOLS_DIR=%GOOGLE_DIR%\depot_tools
 
@@ -23,10 +23,10 @@ set "PATH=%DEPOT_TOOLS_DIR%;%PATH%"
 ECHO %PATH%
 
 ECHO CWD : %cd%
-cd %DEPOT_TOOLS_DIR% 
+cd /d %DEPOT_TOOLS_DIR% 
 ECHO CWD : %cd%
 dir
-cd %GOOGLE_DIR%
+cd /d %GOOGLE_DIR%
 
 ECHO CWD : %cd%
 set SKIA_DIR=%GOOGLE_DIR%\skia
@@ -38,7 +38,7 @@ IF EXIST %SKIA_DIR%\ (
    fetch skia'
 )
 
-cd skia
+cd /d skia
 python3 tools/git-sync-deps
 bin/fetch-ninja
 
