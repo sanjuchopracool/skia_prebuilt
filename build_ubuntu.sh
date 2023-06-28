@@ -6,6 +6,10 @@ echo  PWD= $PWD
 echo  HOME= $HOME
 echo  USER= $USER
 
+which clang
+which clang++
+exit 1
+
 pushd ${HOME}
 
 #check if GOOGLE exist in home directory
