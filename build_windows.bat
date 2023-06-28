@@ -29,13 +29,15 @@ IF EXIST %SKIA_DIR%\ (
 ) ELSE (
    ECHO %SKIA_DIR% does not exist. cloning skia
    fetch skia
-   ECHO skia fetch done
 )
-
+ECHO skia fetch done
 cd /d %SKIA_DIR%
+ECHO syncing skia
 git pull
 ECHO CWD : %cd%
+ECHO "syncing tools"
 python3 tools\git-sync-deps
+ECHO "installing dependencies"
 tools\install_dependencies.sh
 bin\gn gen out\x64_win --args="is_official_build=true skia_use_harfbuzz=false"
 ninja -C out\x64_win
