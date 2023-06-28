@@ -50,7 +50,7 @@ cd ${SKIA_DIR}
 git pull
 python3 tools/git-sync-deps
 tools/install_dependencies.sh
-bin/gn gen out/x64_linux --args="is_official_build=true skia_use_harfbuzz=false cc=clang ccx=clang"
+bin/gn gen out/x64_linux --args="is_official_build=true skia_use_harfbuzz=false cc=clang ccx=clang++"
 bin/gn args out/x64_linux --list
 ninja -C out/x64_linux
 popd
