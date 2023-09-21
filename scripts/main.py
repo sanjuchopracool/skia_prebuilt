@@ -107,9 +107,12 @@ def clone_skia():
         cmd = ["git", "clone", "https://skia.googlesource.com/skia.git"]
         run_cmd(cmd)
     os.chdir(K_SKIA_PATH)
-    run_cmd(["git","pull"])
-    run_cmd(["python3","tools/git-sync-deps"])
-    run_cmd(["python3", "bin/fetch-ninja"], True)
+    cmd = ["git", "pull"]
+    run_cmd(cmd)
+    cmd = ["python3", "tools/git-sync-deps"]
+    run_cmd(cmd)
+    cmd = ["python3", "bin/fetch-ninja"]
+    run_cmd(cmd, True)
     # check_output("bin/fetch-ninja", shell=True, stderr=STDOUT)
 
 
