@@ -155,7 +155,7 @@ def compile_for_win64():
         run_cmd("third_party/ninja/ninja.exe -C out/win/x64/clang_release")
 
 def compile_for_linux():
-    cmd = ["bin/gn", "gen", "out/linux/x64/clang_release", '--args=\'is_official_build=true','cc="clang"', 'cxx="clang++"\'']
+    cmd = ["bin/gn", "gen", "out/linux/x64/clang_release", '--args=\'is_official_build=true cc="clang" cxx="clang++"\'']
     if not run_cmd(cmd):
         cmd = ["third_party/ninja/ninja", "-C", "out/linux/x64/clang_release"]
         run_cmd(cmd)
