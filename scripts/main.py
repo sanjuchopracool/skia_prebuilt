@@ -90,9 +90,9 @@ def clone_depot_tools():
     if os.path.exists(depot_tools_path):
         print("depot tools are already cloned!")
     else:
-        print(f"cloning depot_tools_path at {depot_tools_path}")
+        print(f"cloning depot_tools at {depot_tools_path}")
         os.chdir(K_GOOGLE_DIRECTORY)
-        cmd = 'git clone https://chromium.googlesource.com/chromium/tools/depot_tools.git'
+        cmd = ["git", "clone", "https://chromium.googlesource.com/chromium/tools/depot_tools.git"]
         run_cmd(cmd)
     #     add depot_tools to path
     os.environ["PATH"] = depot_tools_path + os.pathsep + os.environ["PATH"]
