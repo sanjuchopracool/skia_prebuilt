@@ -104,12 +104,12 @@ def clone_skia():
         print("skia is already cloned!")
     else:
         print(f"cloning skia at {K_SKIA_PATH}")
-        cmd = 'git clone https://skia.googlesource.com/skia.git'
+        cmd = ["git", "clone", "https://skia.googlesource.com/skia.git"]
         run_cmd(cmd)
     os.chdir(K_SKIA_PATH)
-    run_cmd("git pull")
-    run_cmd("python3 tools/git-sync-deps")
-    run_cmd("python3 bin/fetch-ninja", True)
+    run_cmd(["git","pull"])
+    run_cmd(["python3","tools/git-sync-deps"])
+    run_cmd(["python3", "bin/fetch-ninja"], True)
     # check_output("bin/fetch-ninja", shell=True, stderr=STDOUT)
 
 
