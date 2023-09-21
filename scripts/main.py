@@ -154,11 +154,19 @@ def compile_for_win64():
     if not run_cmd(cmd):
         run_cmd("third_party/ninja/ninja.exe -C out/win/x64/clang_release")
 
+def compile_for_linux():
+    cmd = ["bin/gn", "gen", "out/linux/x64/clang_release", 'is_official_build = true cc="clang" cxx="clang++"]
+    if not run_cmd(cmd):
+        cmd = ["third_party/ninja/ninja", "-C", "out/linux/x64/clang_release"]
+        run_cmd(cmd)
+
 
 def compile_skia():
     os.chdir(K_SKIA_PATH)
     if K_IS_WINDOWS:
         compile_for_win64()
+    else:
+        compile_for_linux()
 
 
 def build_skia():
