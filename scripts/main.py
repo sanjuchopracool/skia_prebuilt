@@ -115,7 +115,8 @@ def clone_skia():
         run_cmd["python", "tools/git-sync-deps"]
     if K_IS_WINDOWS:
         cmd = ["python3", "bin/fetch-ninja"]
-        run_cmd(cmd, True)
+        if run_cmd(cmd, True):
+            cmd = ["python", "bin/fetch-ninja"]
     else:
         run_cmd(["bin/fetch-ninja"])
     # check_output("bin/fetch-ninja", shell=True, stderr=STDOUT)
