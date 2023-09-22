@@ -1,1 +1,1 @@
-libharfbuzz-dev 
+sudo apt install build-essential clang libfontconfig-dev libjpeg-dev libharfbuzz-dev  mesa-common-dev
