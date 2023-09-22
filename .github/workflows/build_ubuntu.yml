@@ -17,3 +17,4 @@ jobs:
           uses: actions/checkout@v3
         - name: 'execute python build script'
           run:  python3 scripts/main.py
+          shell: sh
