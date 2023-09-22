@@ -162,12 +162,21 @@ def compile_for_linux():
         run_cmd(cmd)
 
 
+def compile_for_mac():
+    cmd = ["bin/gn", 'gen', 'out/macos/x64/clang_release', '--args=is_official_build=true skia_use_system_harfbuzz=false cc="clang" cxx="clang++"']
+    if not run_cmd(cmd):
+        cmd = ["third_party/ninja/ninja", "-C", "out/macos/x64/clang_release"]
+        run_cmd(cmd)
+
+
 def compile_skia():
     os.chdir(K_SKIA_PATH)
     if K_IS_WINDOWS:
         compile_for_win64()
     elif platform.system() == "Linux":
         compile_for_linux()
+    elif platform.system() == "Darwin":
+        compile_for_mac()
 
 
 def build_skia():
