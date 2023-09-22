@@ -13,5 +13,6 @@ jobs:
     steps:
         - name: "Check out repo's default branch"
           uses: actions/checkout@v3
-        - name: 'execute windows batch file'
-          run:  cmd /c "build_windows.bat"
+        - name: 'execute python build script'
+          run:  python3 scripts/main.py
+          shell: sh
