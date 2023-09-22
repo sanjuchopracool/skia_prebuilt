@@ -112,16 +112,19 @@ def clone_skia():
     os.chdir(K_SKIA_PATH)
     cmd = ["git", "pull"]
     run_cmd(cmd)
-    inShell =  K_IS_WINDOWS
-    cmd = ["python3", "tools/git-sync-deps"]
-    if run_cmd(cmd, inShell):
-        run_cmd(["python", "tools/git-sync-deps"], inShell)
-    if K_IS_WINDOWS:
-        cmd = ["python3", "bin/fetch-ninja"]
-        if run_cmd(cmd):
-            cmd = ["python", "bin/fetch-ninja"]
-    else:
-        run_cmd(["bin/fetch-ninja"])
+    try :
+        inShell =  K_IS_WINDOWS
+        cmd = ["python3", "tools/git-sync-deps"]
+        if run_cmd(cmd, inShell):
+            run_cmd(["python", "tools/git-sync-deps"], inShell)
+        if K_IS_WINDOWS:
+            cmd = ["python3", "bin/fetch-ninja"]
+            if run_cmd(cmd):
+                cmd = ["python", "bin/fetch-ninja"]
+        else:
+            run_cmd(["bin/fetch-ninja"])
+    except:
+        print("FAILED TO SYNC dependencies!")
     # check_output("bin/fetch-ninja", shell=True, stderr=STDOUT)
 
 
