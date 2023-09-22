@@ -76,7 +76,9 @@ def setup_global_variables():
         home_path = pathlib.PureWindowsPath(home_path).as_posix()
     home_path = str(home_path)
     K_DOWNLOAD_DIR = home_path + "/Downloads"
-    if K_IS_WINDOWS and os.getenv("SKIA_DRIVE", default=None):
+    project_dir = os.getenv("PROJECT_DIR")
+    print(f"{project_dir}")
+    if K_IS_WINDOWS and project_dir:
         K_PROJECTS_DIRECTORY = "D:/PROJECTS"
     else:
         K_PROJECTS_DIRECTORY = home_path + "/PROJECTS"
