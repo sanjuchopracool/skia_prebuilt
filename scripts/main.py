@@ -163,7 +163,7 @@ def compile_for_linux():
 
 
 def compile_for_mac():
-    cmd = ["bin/gn", 'gen', 'out/macos/x64/clang_release', '--args=is_official_build=true skia_use_system_harfbuzz=false cc="clang" cxx="clang++"']
+    cmd = ["bin/gn", 'gen', 'out/macos/x64/clang_release', '--args=is_official_build=true skia_use_system_harfbuzz=false skia_use_system_libjpeg_turbo = false skia_use_system_libwebp = false skia_use_system_libpng = false skia_use_system_icu = false cc="clang" cxx="clang++"']
     if not run_cmd(cmd):
         cmd = ["third_party/ninja/ninja", "-C", "out/macos/x64/clang_release"]
         run_cmd(cmd)
