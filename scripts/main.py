@@ -144,7 +144,8 @@ def copy_libs_files(source_dir, destination_dir, lib_filter):
     shutil.copytree (k_SKIA_INCLUDE_PATH, out_dir)
     print(f"copying include files from {k_SKIA_INCLUDE_PATH} to {out_dir}")
     index_of_first_slash = source_dir.find('/',1)
-    out_dir = destination_dir + "/" + source_dir[index_of_first_slash+1]
+    out_dir = destination_dir + "/" + source_dir[index_of_first_slash+1:]
+    os.makedirs(out_dir, exist_ok=True)
     # shutil.copytree (source_dir, out_dir)
     files = glob.iglob(os.path.join(source_dir, lib_filter))
     for file in files:
