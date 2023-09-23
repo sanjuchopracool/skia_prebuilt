@@ -9,7 +9,7 @@ permissions:
 jobs:
   setup_depot_tools_and_build_skia:
     name: 'Setup depot tools and build skia'
-    runs-on: windows-latest
+    runs-on: windows-2019	
     steps:
         - name: "Check out repo's default branch"
           uses: actions/checkout@v3
