@@ -22,7 +22,7 @@ def run_cmd(cmd, in_shell=False):
     my_env = os.environ.copy()
     path = my_env["PATH"]
     return_code = 0
-    print(f"Running command : {cmd} in: {os.getcwd()} with PATH={path}")
+    print(f"Running command : {cmd} in shell {in_shell}: {os.getcwd()} with PATH={path}")
     try:
         p = subprocess.run(cmd, stderr=sys.stderr, stdout=sys.stdout, env=my_env, shell=in_shell)
         return_code =  p.returncode
