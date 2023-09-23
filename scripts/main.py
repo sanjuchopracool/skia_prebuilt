@@ -136,14 +136,15 @@ def clone_skia():
 
 
 def copy_libs_files(source_dir, destination_dir, lib_filter):
+    source_dir = source_dir.strip()
     if os.path.exists(destination_dir) and os.path.isdir(destination_dir):
         shutil.rmtree(destination_dir)
 
-    out_dir = destination_dir + "\include"
+    out_dir = destination_dir + "/include"
     shutil.copytree (k_SKIA_INCLUDE_PATH, out_dir)
     print(f"copying include files from {k_SKIA_INCLUDE_PATH} to {out_dir}")
-    p = pathlib.Path(source_dir)
-    out_dir = destination_dir + "/" + str(pathlib.Path(*p.parts[2:]))
+    index_of_first_slash = source_dir.find('/',1)
+    out_dir = destination_dir + "/" + source_dir[index_of_first_slash+1]
     # shutil.copytree (source_dir, out_dir)
     files = glob.iglob(os.path.join(source_dir, lib_filter))
     for file in files:
