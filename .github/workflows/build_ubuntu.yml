@@ -19,13 +19,13 @@ jobs:
         #   run:  python3 -u scripts/main.py
         #   shell: sh
         - name: 'create simple file'
-          run:  touch $HOME/skia_linux_x64_clang_release.tar.gz
+          run:  touch ${HOME}/skia_linux_x64_clang_release.tar.gz
           shell: sh
         - name: Upload binaries to release
           uses: svenstaro/upload-release-action@v2
           with:
             repo_token: ${{ secrets.GITHUB_TOKEN }}
-            file: $HOME/skia_linux_x64_clang_release.tar.gz
+            file: ${HOME}/skia_linux_x64_clang_release.tar.gz
             asset_name: skia_linux_x64_clang_release
             tag: weekly
             overwrite: true
