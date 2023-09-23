@@ -199,6 +199,7 @@ def compile_for_linux():
         cmd = ["third_party/ninja/ninja", "-C", out_dir_path]
         run_cmd(cmd)
         k_SKIA_LIBS_PATH = K_SKIA_PATH + out_dir_path
+        copy_libs_files(out_dir_path, "skia_linux_x64_clang_release" ,"*.a")
 
 
 def compile_for_mac():
@@ -209,6 +210,7 @@ def compile_for_mac():
         cmd = ["third_party/ninja/ninja", "-C", out_dir_path]
         run_cmd(cmd)
         k_SKIA_LIBS_PATH = K_SKIA_PATH + out_dir_path
+        copy_libs_files(out_dir_path, "skia_macos_x64_clang_release" ,"*.a")
 
 
 def compile_skia():
