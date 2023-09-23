@@ -154,20 +154,31 @@ def copy_and_publish(source_dir, destination_dir, lib_filter):
              print(f"copying file from {file} to {out_dir}")
              shutil.copy2(file, out_dir)
 
-    archived = destination_dir + ".zip"
+    extension = ""
+    format_str = ""
+    if K_IS_WINDOWS:
+        format_str="zip"
+        extension =".zip"
+    else:
+        format_str = "gztar"
+        extension = ".tar.gz"
+
+    archived = destination_dir + extension
+
     if os.path.exists(archived) and os.path.isfile(archived):
         shutil.rmtree(archived)
 
-    directory = pathlib.Path(destination_dir)
-    with zipfile.ZipFile(archived, mode="w") as archive:
-        for file_path in directory.rglob("*"):
-            archive.write(
-                file_path,
-                arcname=file_path.relative_to(directory)
-            )
+
+    compressed_file = shutil.make_archive(
+            base_name=destination_dir,   # archive file name w/o extension
+            format=format_str,        # available formats: zip, gztar, bztar, xztar, tar
+            root_dir=destination_dir # directory to compress
+    )
         
     if os.path.exists(archived) and os.path.isfile(archived):
         print(f"Created archieve {archived}")
+    else:
+        print(f"Failed to create archieve {archived}")
 
 def build_for_windows():
     # X64 MSVC DEBUG
