@@ -16,6 +16,8 @@ K_DOWNLOAD_DIR = ""
 K_PROJECTS_DIRECTORY = ""
 K_GOOGLE_DIRECTORY = ""
 K_SKIA_PATH = ""
+k_SKIA_INCLUDE_PATH = ""
+k_SKIA_LIBS_PATH = ""
 
 
 def run_cmd(cmd, in_shell=False):
@@ -68,6 +70,7 @@ def setup_global_variables():
     global K_PROJECTS_DIRECTORY
     global K_SKIA_PATH
     global K_IS_WINDOWS
+    global k_SKIA_INCLUDE_PATH
     if os.name == 'nt':
         K_IS_WINDOWS = True
 
@@ -85,6 +88,7 @@ def setup_global_variables():
 
     K_GOOGLE_DIRECTORY = K_PROJECTS_DIRECTORY + "/GOOGLE"
     K_SKIA_PATH = K_GOOGLE_DIRECTORY + "/skia"
+    k_SKIA_INCLUDE_PATH = K_SKIA_PATH + "/include"
 
 
 def clone_depot_tools():
@@ -130,6 +134,7 @@ def clone_skia():
 
 
 def compile_for_win64():
+    global k_SKIA_LIBS_PATH
     # X64 MSVC DEBUG
     # cmd = ('bin/gn gen out/win/x64/msvc_debug --args="'
     #        ' skia_use_system_libjpeg_turbo=false skia_use_system_zlib=false skia_use_system_harfbuzz=false'
@@ -147,6 +152,7 @@ def compile_for_win64():
     #     run_cmd("third_party/ninja/ninja.exe -C out/win/x64/msvc")
 
     # X64 CLANG DEBUG
+    out_dir_path = "out/win/x64/clang_debug"
     cmd = (
         'bin/gn gen out/win/x64/clang_debug --args="clang_win = \\"C:\\\Program Files\\\LLVM\\" cc=\\"clang\\" cxx=\\"clang++\\"'
         ' skia_use_system_libjpeg_turbo=false skia_use_system_zlib=false skia_use_system_harfbuzz=false'
@@ -154,6 +160,7 @@ def compile_for_win64():
         ' skia_use_system_expat=false extra_cflags=[ \\"/MDd\\" ]"')
     if not run_cmd(cmd):
         run_cmd("third_party/ninja/ninja.exe -C out/win/x64/clang_debug")
+        k_SKIA_LIBS_PATH = K_SKIA_PATH + out_dir_path
 
     # X64 CLANG RELEASE
     cmd = (
@@ -165,17 +172,23 @@ def compile_for_win64():
         run_cmd("third_party/ninja/ninja.exe -C out/win/x64/clang_release")
 
 def compile_for_linux():
-    cmd = ["bin/gn", 'gen', 'out/linux/x64/clang_release', '--args=is_official_build=true skia_use_system_harfbuzz=false cc="clang" cxx="clang++"']
+    global k_SKIA_LIBS_PATH
+    out_dir_path = "out/linux/x64/clang_release"
+    cmd = ["bin/gn", 'gen', out_dir_path, '--args=is_official_build=true skia_use_system_harfbuzz=false cc="clang" cxx="clang++"']
     if not run_cmd(cmd):
-        cmd = ["third_party/ninja/ninja", "-C", "out/linux/x64/clang_release"]
+        cmd = ["third_party/ninja/ninja", "-C", out_dir_path]
         run_cmd(cmd)
+        k_SKIA_LIBS_PATH = K_SKIA_PATH + out_dir_path
 
 
 def compile_for_mac():
-    cmd = ["bin/gn", 'gen', 'out/macos/x64/clang_release', '--args=is_official_build=true skia_use_system_harfbuzz=false skia_use_system_libjpeg_turbo = false skia_use_system_libwebp = false skia_use_system_libpng = false skia_use_system_icu = false cc="clang" cxx="clang++"']
+    global k_SKIA_LIBS_PATH
+    out_dir_path = "out/macos/x64/clang_release"
+    cmd = ["bin/gn", 'gen', out_dir_path, '--args=is_official_build=true skia_use_system_harfbuzz=false skia_use_system_libjpeg_turbo = false skia_use_system_libwebp = false skia_use_system_libpng = false skia_use_system_icu = false cc="clang" cxx="clang++"']
     if not run_cmd(cmd):
-        cmd = ["third_party/ninja/ninja", "-C", "out/macos/x64/clang_release"]
+        cmd = ["third_party/ninja/ninja", "-C", out_dir_path]
         run_cmd(cmd)
+        k_SKIA_LIBS_PATH = K_SKIA_PATH + out_dir_path
 
 
 def compile_skia():
