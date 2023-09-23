@@ -166,7 +166,7 @@ def copy_and_publish(source_dir, destination_dir, lib_filter):
     archived = destination_dir + extension
 
     if os.path.exists(archived) and os.path.isfile(archived):
-        shutil.rmtree(archived)
+        os.remove(archived)
 
 
     compressed_file = shutil.make_archive(
