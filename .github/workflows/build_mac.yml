@@ -22,7 +22,7 @@ jobs:
           uses: svenstaro/upload-release-action@v2
           with:
             repo_token: ${{ secrets.GITHUB_TOKEN }}
-            file: /home/runner/PROJECTS/GOOGLE/skia/skia_macos_x64_clang_release.tar.gz
+            file: /Users/runner/PROJECTS/GOOGLE/skia/skia_macos_x64_clang_release.tar.gz
             asset_name: skia_macos_x64_clang_release.tar.gz
             tag: refs/tags/weekly
             overwrite: true
