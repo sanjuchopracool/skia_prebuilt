@@ -11,6 +11,7 @@ from urllib.request import urlretrieve
 from pathlib import Path
 from subprocess import check_output, STDOUT
 import glob, shutil
+import zipfile
 
 K_IS_WINDOWS: bool = False
 K_DOWNLOAD_DIR = ""
@@ -135,7 +136,7 @@ def clone_skia():
     # check_output("bin/fetch-ninja", shell=True, stderr=STDOUT)
 
 
-def copy_libs_files(source_dir, destination_dir, lib_filter):
+def copy_and_publish(source_dir, destination_dir, lib_filter):
     source_dir = source_dir.strip()
     if os.path.exists(destination_dir) and os.path.isdir(destination_dir):
         shutil.rmtree(destination_dir)
@@ -153,8 +154,22 @@ def copy_libs_files(source_dir, destination_dir, lib_filter):
              print(f"copying file from {file} to {out_dir}")
              shutil.copy2(file, out_dir)
 
+    archived = destination_dir + ".zip"
+    if os.path.exists(archived) and os.path.isfile(archived):
+        shutil.rmtree(archived)
 
-def compile_for_win64():
+    directory = pathlib.Path(destination_dir)
+    with zipfile.ZipFile(archive, mode="w") as archive:
+        for file_path in directory.rglob("*"):
+            archive.write(
+                file_path,
+                arcname=file_path.relative_to(directory)
+            )
+        
+    if os.path.exists(archived) and os.path.isfile(archived):
+        print(f"Created archieve {archived}")
+
+def build_for_windows():
     # X64 MSVC DEBUG
     # cmd = ('bin/gn gen out/win/x64/msvc_debug --args="'
     #        ' skia_use_system_libjpeg_turbo=false skia_use_system_zlib=false skia_use_system_harfbuzz=false'
@@ -179,7 +194,7 @@ def compile_for_win64():
         ' skia_use_system_expat=false extra_cflags=[ \\"/MDd\\" ]"')
     if not run_cmd(cmd):
         run_cmd("third_party/ninja/ninja.exe -C out/win/x64/clang_debug")
-        copy_libs_files("out/win/x64/clang_debug", "skia_win_x64_clang_debug" ,"*.lib")
+        copy_and_publish("out/win/x64/clang_debug", "skia_win_x64_clang_debug" ,"*.lib")
 
     # X64 CLANG RELEASE
     cmd = (
@@ -189,9 +204,9 @@ def compile_for_win64():
         ' skia_use_system_expat=false extra_cflags=[ \\"/MD\\" ]"')
     if not run_cmd(cmd):
         run_cmd("third_party/ninja/ninja.exe -C out/win/x64/clang_release")
-        copy_libs_files("out/win/x64/clang_release", "skia_win_x64_clang_release" ,"*.lib")
+        copy_and_publish("out/win/x64/clang_release", "skia_win_x64_clang_release" ,"*.lib")
 
-def compile_for_linux():
+def build_for_linux():
     global k_SKIA_LIBS_PATH
     out_dir_path = "out/linux/x64/clang_release"
     cmd = ["bin/gn", 'gen', out_dir_path, '--args=is_official_build=true skia_use_system_harfbuzz=false cc="clang" cxx="clang++"']
@@ -199,10 +214,10 @@ def compile_for_linux():
         cmd = ["third_party/ninja/ninja", "-C", out_dir_path]
         run_cmd(cmd)
         k_SKIA_LIBS_PATH = K_SKIA_PATH + out_dir_path
-        copy_libs_files(out_dir_path, "skia_linux_x64_clang_release" ,"*.a")
+        copy_and_publish(out_dir_path, "skia_linux_x64_clang_release" ,"*.a")
 
 
-def compile_for_mac():
+def build_for_mac():
     global k_SKIA_LIBS_PATH
     out_dir_path = "out/macos/x64/clang_release"
     cmd = ["bin/gn", 'gen', out_dir_path, '--args=is_official_build=true skia_use_system_harfbuzz=false skia_use_system_libjpeg_turbo = false skia_use_system_libwebp = false skia_use_system_libpng = false skia_use_system_icu = false cc="clang" cxx="clang++"']
@@ -210,17 +225,17 @@ def compile_for_mac():
         cmd = ["third_party/ninja/ninja", "-C", out_dir_path]
         run_cmd(cmd)
         k_SKIA_LIBS_PATH = K_SKIA_PATH + out_dir_path
-        copy_libs_files(out_dir_path, "skia_macos_x64_clang_release" ,"*.a")
+        copy_and_publish(out_dir_path, "skia_macos_x64_clang_release" ,"*.a")
 
 
 def compile_skia():
     os.chdir(K_SKIA_PATH)
     if K_IS_WINDOWS:
-        compile_for_win64()
+        build_for_windows()
     elif platform.system() == "Linux":
-        compile_for_linux()
+        build_for_linux()
     elif platform.system() == "Darwin":
-        compile_for_mac()
+        build_for_mac()
 
 
 def build_skia():
