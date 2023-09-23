@@ -143,13 +143,13 @@ def copy_libs_files(source_dir, destination_dir, lib_filter):
     shutil.copytree (k_SKIA_INCLUDE_PATH, out_dir)
     print(f"copying include files from {k_SKIA_INCLUDE_PATH} to {out_dir}")
     p = pathlib.Path(source_dir)
-    lib_path = destination_dir + "/" + str(pathlib.Path(*p.parts[2:]))
-    shutil.copytree (source_dir, destination_dir + '')
-    # shutil.copy(file_to_copy, destination_directory)
-    # files = glob.iglob(os.path.join(source_dir, "*.ext"))
-    # for file in files:
-    #     if os.path.isfile(file):
-    #         shutil.copy2(file, dest_dir)
+    out_dir = destination_dir + "/" + str(pathlib.Path(*p.parts[2:]))
+    # shutil.copytree (source_dir, out_dir)
+    files = glob.iglob(os.path.join(source_dir, lib_filter))
+    for file in files:
+         if os.path.isfile(file):
+             print(f"copying file from {file} to {out_dir}")
+             shutil.copy2(file, out_dir)
 
 
 def compile_for_win64():
