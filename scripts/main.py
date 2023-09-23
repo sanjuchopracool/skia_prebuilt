@@ -10,6 +10,7 @@ import platform
 from urllib.request import urlretrieve
 from pathlib import Path
 from subprocess import check_output, STDOUT
+import glob, shutil
 
 K_IS_WINDOWS: bool = False
 K_DOWNLOAD_DIR = ""
@@ -18,6 +19,7 @@ K_GOOGLE_DIRECTORY = ""
 K_SKIA_PATH = ""
 k_SKIA_INCLUDE_PATH = ""
 k_SKIA_LIBS_PATH = ""
+K_ARCHIEVE_DIR = "skia"
 
 
 def run_cmd(cmd, in_shell=False):
@@ -133,8 +135,16 @@ def clone_skia():
     # check_output("bin/fetch-ninja", shell=True, stderr=STDOUT)
 
 
+def copy_libs_files(destination_dir, lib_filter):
+    shutil.copytree (k_SKIA_INCLUDE_PATH, destination_dir + "\include")
+    # shutil.copy(file_to_copy, destination_directory)
+    # files = glob.iglob(os.path.join(source_dir, "*.ext"))
+    # for file in files:
+    #     if os.path.isfile(file):
+    #         shutil.copy2(file, dest_dir)
+
+
 def compile_for_win64():
-    global k_SKIA_LIBS_PATH
     # X64 MSVC DEBUG
     # cmd = ('bin/gn gen out/win/x64/msvc_debug --args="'
     #        ' skia_use_system_libjpeg_turbo=false skia_use_system_zlib=false skia_use_system_harfbuzz=false'
@@ -152,7 +162,6 @@ def compile_for_win64():
     #     run_cmd("third_party/ninja/ninja.exe -C out/win/x64/msvc")
 
     # X64 CLANG DEBUG
-    out_dir_path = "out/win/x64/clang_debug"
     cmd = (
         'bin/gn gen out/win/x64/clang_debug --args="clang_win = \\"C:\\\Program Files\\\LLVM\\" cc=\\"clang\\" cxx=\\"clang++\\"'
         ' skia_use_system_libjpeg_turbo=false skia_use_system_zlib=false skia_use_system_harfbuzz=false'
@@ -160,7 +169,7 @@ def compile_for_win64():
         ' skia_use_system_expat=false extra_cflags=[ \\"/MDd\\" ]"')
     if not run_cmd(cmd):
         run_cmd("third_party/ninja/ninja.exe -C out/win/x64/clang_debug")
-        k_SKIA_LIBS_PATH = K_SKIA_PATH + out_dir_path
+        copy_libs_files("skia_win_x64_clang_debug" ,".lib")
 
     # X64 CLANG RELEASE
     cmd = (
@@ -170,6 +179,7 @@ def compile_for_win64():
         ' skia_use_system_expat=false extra_cflags=[ \\"/MD\\" ]"')
     if not run_cmd(cmd):
         run_cmd("third_party/ninja/ninja.exe -C out/win/x64/clang_release")
+        copy_libs_files("skia_win_x64_clang_release" ,".lib")
 
 def compile_for_linux():
     global k_SKIA_LIBS_PATH
