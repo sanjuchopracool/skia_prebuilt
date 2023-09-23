@@ -159,7 +159,7 @@ def copy_and_publish(source_dir, destination_dir, lib_filter):
         shutil.rmtree(archived)
 
     directory = pathlib.Path(destination_dir)
-    with zipfile.ZipFile(archive, mode="w") as archive:
+    with zipfile.ZipFile(archived, mode="w") as archive:
         for file_path in directory.rglob("*"):
             archive.write(
                 file_path,
