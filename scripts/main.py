@@ -125,6 +125,7 @@ def clone_skia():
             run_cmd(["bin/fetch-ninja"])
     except:
         print("FAILED TO SYNC dependencies!")
+        raise
     # check_output("bin/fetch-ninja", shell=True, stderr=STDOUT)
 
 
