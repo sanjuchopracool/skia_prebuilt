@@ -139,8 +139,12 @@ def copy_libs_files(source_dir, destination_dir, lib_filter):
     if os.path.exists(destination_dir) and os.path.isdir(destination_dir):
         shutil.rmtree(destination_dir)
 
-    shutil.copytree (k_SKIA_INCLUDE_PATH, destination_dir + "\include")
-    shutil.copytree (source_dir, destination_dir)
+    out_dir = destination_dir + "\include"
+    shutil.copytree (k_SKIA_INCLUDE_PATH, out_dir)
+    print(f"copying include files from {k_SKIA_INCLUDE_PATH} to {out_dir}")
+    p = pathlib.Path(source_dir)
+    lib_path = destination_dir + "/" + str(pathlib.Path(*p.parts[2:]))
+    shutil.copytree (source_dir, destination_dir + '')
     # shutil.copy(file_to_copy, destination_directory)
     # files = glob.iglob(os.path.join(source_dir, "*.ext"))
     # for file in files:
@@ -173,7 +177,7 @@ def compile_for_win64():
         ' skia_use_system_expat=false extra_cflags=[ \\"/MDd\\" ]"')
     if not run_cmd(cmd):
         run_cmd("third_party/ninja/ninja.exe -C out/win/x64/clang_debug")
-        copy_libs_files("out/win/x64/clang_debug", "skia_win_x64_clang_debug" ,".lib")
+        copy_libs_files("out/win/x64/clang_debug", "skia_win_x64_clang_debug" ,"*.lib")
 
     # X64 CLANG RELEASE
     cmd = (
@@ -183,7 +187,7 @@ def compile_for_win64():
         ' skia_use_system_expat=false extra_cflags=[ \\"/MD\\" ]"')
     if not run_cmd(cmd):
         run_cmd("third_party/ninja/ninja.exe -C out/win/x64/clang_release")
-        copy_libs_files("out/win/x64/clang_release", "skia_win_x64_clang_release" ,".lib")
+        copy_libs_files("out/win/x64/clang_release", "skia_win_x64_clang_release" ,"*.lib")
 
 def compile_for_linux():
     global k_SKIA_LIBS_PATH
