@@ -16,5 +16,5 @@ jobs:
         - name: "Check out repo's default branch"
           uses: actions/checkout@v3
         - name: 'execute python build script'
-          run:  python3 scripts/main.py
+          run:  python3 -u scripts/main.py
           shell: sh
