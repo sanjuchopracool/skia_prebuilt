@@ -114,7 +114,7 @@ def clone_skia():
     run_cmd(cmd)
     try :
         inShell =  K_IS_WINDOWS
-        cmd = ["python", "tools/git-sync-deps"]
+        cmd = ["python2", "tools/git-sync-deps"]
         if run_cmd(cmd, inShell):
             run_cmd(["python", "tools/git-sync-deps"], inShell)
         if K_IS_WINDOWS:
