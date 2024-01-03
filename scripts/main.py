@@ -213,8 +213,8 @@ def build_for_windows():
         ' skia_use_system_libpng=false skia_use_system_libwebp=false skia_use_system_icu=false'
         ' skia_use_system_expat=false extra_cflags=[ \\"/MDd\\" ]"')
     if not run_cmd(cmd):
-        run_cmd("third_party/ninja/ninja.exe -C out/win/x64/clang_debug")
-        copy_and_publish("out/win/x64/clang_debug", "skia_win_x64_clang_debug" ,"*.lib")
+        run_cmd("third_party/ninja/ninja.exe -C out/win/x64/msvc_debug")
+        copy_and_publish("out/win/x64/clang_debug", "skia_win_x64_msvc_debug" ,"*.lib")
 
     # X64 CLANG RELEASE
     cmd = (
@@ -223,8 +223,8 @@ def build_for_windows():
         ' skia_use_system_libpng=false skia_use_system_libwebp=false skia_use_system_icu=false'
         ' skia_use_system_expat=false extra_cflags=[ \\"/MD\\" ]"')
     if not run_cmd(cmd):
-        run_cmd("third_party/ninja/ninja.exe -C out/win/x64/clang_release")
-        copy_and_publish("out/win/x64/clang_release", "skia_win_x64_clang_release" ,"*.lib")
+        run_cmd("third_party/ninja/ninja.exe -C out/win/x64/msvc_release")
+        copy_and_publish("out/win/x64/clang_release", "skia_win_x64_msvc_release" ,"*.lib")
 
 def build_for_linux():
     global k_SKIA_LIBS_PATH
