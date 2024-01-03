@@ -1,6 +1,8 @@
 name: 'Build skia on windows'
 on:
     workflow_dispatch:
+    schedule:
+        - cron: "0 0 * * 6"
     
 permissions:
   contents: write
@@ -16,3 +18,19 @@ jobs:
         - name: 'execute python build script'
           shell: pwsh
           run:  python -u scripts/main.py
+        - name: Upload windows release binaries to releases
+          uses: svenstaro/upload-release-action@v2
+          with:
+            repo_token: ${{ secrets.GITHUB_TOKEN }}
+            file: /home/runner/PROJECTS/GOOGLE/skia/skia_linux_x64_clang_release.tar.gz
+            asset_name: skia_win_x64_msvc_release.zip
+            tag: refs/tags/weekly
+            overwrite: true
+        - name: Upload windows release binaries to releases
+          uses: svenstaro/upload-release-action@v2
+          with:
+            repo_token: ${{ secrets.GITHUB_TOKEN }}
+            file: /home/runner/PROJECTS/GOOGLE/skia/skia_linux_x64_clang_release.tar.gz
+            asset_name: skia_win_x64_msvc_debug.zip
+            tag: refs/tags/weekly
+            overwrite: true
