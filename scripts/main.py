@@ -30,7 +30,7 @@ def run_cmd(cmd, in_shell=False):
     print(f"Running command : {cmd} in shell {in_shell}: {os.getcwd()} with PATH={path}")
     try:
         p = subprocess.run(cmd, stderr=sys.stderr, stdout=sys.stdout, env=my_env, shell=in_shell)
-        return_code =  p.returncode
+        return_code = p.returncode
     except subprocess.CalledProcessError as e:
         print("Oops... output:\n" + str(e.output))
         return_code = 1
@@ -119,17 +119,19 @@ def clone_skia():
     os.chdir(K_SKIA_PATH)
     cmd = ["git", "pull"]
     run_cmd(cmd)
-    try :
-        inShell =  K_IS_WINDOWS
+    try:
+        inShell = K_IS_WINDOWS
         cmd = ["python3", "tools/git-sync-deps"]
-        
+
         if K_IS_WINDOWS:
             os.environ["EMSDK"] = K_SKIA_PATH + "/third_party/externals/emsdk"
             os.environ["EMSDK_NODE"] = K_SKIA_PATH + "/third_party/externals/emsdk/node/16.20.0_64bit/bin"
             os.environ["EMSDK_PYTHON"] = K_SKIA_PATH + "/third_party/externals/emsdk/upstream/emscripten"
             os.environ["PATH"] = K_SKIA_PATH + "/third_party/externals/emsdk" + os.pathsep + os.environ["PATH"]
-            os.environ["PATH"] = K_SKIA_PATH + "/third_party/externals/emsdk/node/16.20.0_64bit/bin" + os.pathsep + os.environ["PATH"]
-            os.environ["PATH"] = K_SKIA_PATH + "/third_party/externals/emsdk/upstream/emscripten" + os.pathsep + os.environ["PATH"]
+            os.environ["PATH"] = K_SKIA_PATH + "/third_party/externals/emsdk/node/16.20.0_64bit/bin" + os.pathsep + \
+                                 os.environ["PATH"]
+            os.environ["PATH"] = K_SKIA_PATH + "/third_party/externals/emsdk/upstream/emscripten" + os.pathsep + \
+                                 os.environ["PATH"]
 
         if run_cmd(cmd, inShell):
             run_cmd(["python3", "tools/git-sync-deps"], inShell)
@@ -151,23 +153,23 @@ def copy_and_publish(source_dir, destination_dir, lib_filter):
         shutil.rmtree(destination_dir)
 
     out_dir = destination_dir + "/include"
-    shutil.copytree (k_SKIA_INCLUDE_PATH, out_dir)
+    shutil.copytree(k_SKIA_INCLUDE_PATH, out_dir)
     print(f"copying include files from {k_SKIA_INCLUDE_PATH} to {out_dir}")
-    index_of_first_slash = source_dir.find('/',1)
-    out_dir = destination_dir + "/" + source_dir[index_of_first_slash+1:]
+    index_of_first_slash = source_dir.find('/', 1)
+    out_dir = destination_dir + "/" + source_dir[index_of_first_slash + 1:]
     os.makedirs(out_dir, exist_ok=True)
     # shutil.copytree (source_dir, out_dir)
     files = glob.iglob(os.path.join(source_dir, lib_filter))
     for file in files:
-         if os.path.isfile(file):
-             print(f"copying file from {file} to {out_dir}")
-             shutil.copy2(file, out_dir)
+        if os.path.isfile(file):
+            print(f"copying file from {file} to {out_dir}")
+            shutil.copy2(file, out_dir)
 
     extension = ""
     format_str = ""
     if K_IS_WINDOWS:
-        format_str="zip"
-        extension =".zip"
+        format_str = "zip"
+        extension = ".zip"
     else:
         format_str = "gztar"
         extension = ".tar.gz"
@@ -177,17 +179,17 @@ def copy_and_publish(source_dir, destination_dir, lib_filter):
     if os.path.exists(archived) and os.path.isfile(archived):
         os.remove(archived)
 
-
     compressed_file = shutil.make_archive(
-            base_name=destination_dir,   # archive file name w/o extension
-            format=format_str,        # available formats: zip, gztar, bztar, xztar, tar
-            root_dir=destination_dir # directory to compress
+        base_name=destination_dir,  # archive file name w/o extension
+        format=format_str,  # available formats: zip, gztar, bztar, xztar, tar
+        root_dir=destination_dir  # directory to compress
     )
-        
+
     if os.path.exists(archived) and os.path.isfile(archived):
         print(f"Created archieve {archived}")
     else:
         print(f"Failed to create archieve {archived}")
+
 
 def build_for_windows():
     # X64 MSVC DEBUG
@@ -214,7 +216,7 @@ def build_for_windows():
         ' skia_use_system_expat=false extra_cflags=[ \\"/MDd\\" ]"')
     if not run_cmd(cmd):
         run_cmd("third_party/ninja/ninja.exe -C out/win/x64/msvc_debug")
-        copy_and_publish("out/win/x64/clang_debug", "skia_win_x64_msvc_debug" ,"*.lib")
+        copy_and_publish("out/win/x64/msvc_debug", "skia_win_x64_msvc_debug", "*.lib")
 
     # X64 CLANG RELEASE
     cmd = (
@@ -224,28 +226,31 @@ def build_for_windows():
         ' skia_use_system_expat=false extra_cflags=[ \\"/MD\\" ]"')
     if not run_cmd(cmd):
         run_cmd("third_party/ninja/ninja.exe -C out/win/x64/msvc_release")
-        copy_and_publish("out/win/x64/clang_release", "skia_win_x64_msvc_release" ,"*.lib")
+        copy_and_publish("out/win/x64/msvc_release", "skia_win_x64_msvc_release", "*.lib")
+
 
 def build_for_linux():
     global k_SKIA_LIBS_PATH
     out_dir_path = "out/linux/x64/clang_release"
-    cmd = ["bin/gn", 'gen', out_dir_path, '--args=is_official_build=true skia_use_system_harfbuzz=false cc="clang" cxx="clang++"']
+    cmd = ["bin/gn", 'gen', out_dir_path,
+           '--args=is_official_build=true skia_use_system_harfbuzz=false cc="clang" cxx="clang++"']
     if not run_cmd(cmd):
         cmd = ["third_party/ninja/ninja", "-C", out_dir_path]
         run_cmd(cmd)
         k_SKIA_LIBS_PATH = K_SKIA_PATH + out_dir_path
-        copy_and_publish(out_dir_path, "skia_linux_x64_clang_release" ,"*.a")
+        copy_and_publish(out_dir_path, "skia_linux_x64_clang_release", "*.a")
 
 
 def build_for_mac():
     global k_SKIA_LIBS_PATH
     out_dir_path = "out/macos/x64/clang_release"
-    cmd = ["bin/gn", 'gen', out_dir_path, '--args=is_official_build=true skia_use_system_harfbuzz=false skia_use_system_libjpeg_turbo = false skia_use_system_libwebp = false skia_use_system_libpng = false skia_use_system_icu = false cc="clang" cxx="clang++"']
+    cmd = ["bin/gn", 'gen', out_dir_path,
+           '--args=is_official_build=true skia_use_system_harfbuzz=false skia_use_system_libjpeg_turbo = false skia_use_system_libwebp = false skia_use_system_libpng = false skia_use_system_icu = false cc="clang" cxx="clang++"']
     if not run_cmd(cmd):
         cmd = ["third_party/ninja/ninja", "-C", out_dir_path]
         run_cmd(cmd)
         k_SKIA_LIBS_PATH = K_SKIA_PATH + out_dir_path
-        copy_and_publish(out_dir_path, "skia_macos_x64_clang_release" ,"*.a")
+        copy_and_publish(out_dir_path, "skia_macos_x64_clang_release", "*.a")
 
 
 def compile_skia():
