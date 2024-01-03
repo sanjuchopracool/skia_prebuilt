@@ -208,7 +208,7 @@ def build_for_windows():
 
     # X64 CLANG DEBUG
     cmd = (
-        'bin/gn gen out/win/x64/clang_debug --args="clang_win = \\"C:\\\Program Files\\\LLVM\\" cc=\\"clang\\" cxx=\\"clang++\\"'
+        'bin/gn gen out/win/x64/clang_debug --args="clang_win=\\"C:\\\Program Files\\\LLVM\\" cc=\\"clang\\" cxx=\\"clang++\\"'
         ' skia_use_system_libjpeg_turbo=false skia_use_system_zlib=false skia_use_system_harfbuzz=false'
         ' skia_use_system_libpng=false skia_use_system_libwebp=false skia_use_system_icu=false'
         ' skia_use_system_expat=false extra_cflags=[ \\"/MDd\\" ]"')
@@ -218,7 +218,7 @@ def build_for_windows():
 
     # X64 CLANG RELEASE
     cmd = (
-        'bin/gn gen out/win/x64/clang_release --args="is_official_build=true clang_win = \\"C:\\\Program Files\\\LLVM\\" cc=\\"clang\\" cxx=\\"clang++\\"'
+        'bin/gn gen out/win/x64/clang_release --args="is_official_build=true clang_win=\\"C:\\\Program Files\\\LLVM\\" cc=\\"clang\\" cxx=\\"clang++\\"'
         ' skia_use_system_libjpeg_turbo=false skia_use_system_zlib=false skia_use_system_harfbuzz=false'
         ' skia_use_system_libpng=false skia_use_system_libwebp=false skia_use_system_icu=false'
         ' skia_use_system_expat=false extra_cflags=[ \\"/MD\\" ]"')
