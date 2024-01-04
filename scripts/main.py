@@ -21,6 +21,7 @@ K_SKIA_PATH = ""
 k_SKIA_INCLUDE_PATH = ""
 k_SKIA_LIBS_PATH = ""
 K_ARCHIEVE_DIR = "skia"
+K_BUILD_WITH_CLANG_ON_WINDOWS: bool = False
 
 
 def run_cmd(cmd, in_shell=False):
@@ -228,25 +229,26 @@ def build_for_windows():
         run_cmd("third_party/ninja/ninja.exe -C out/win/x64/msvc_release")
         copy_and_publish("out/win/x64/msvc_release", "skia_win_x64_msvc_release", "*.lib")
 
-    # X64 CLANG DEBUG
-    cmd = (
-        'bin/gn gen out/win/x64/clang_debug --args="clang_win=\\"C:\\\Program Files\\\LLVM\\"'
-        ' skia_use_system_libjpeg_turbo=false skia_use_system_zlib=false skia_use_system_harfbuzz=false'
-        ' skia_use_system_libpng=false skia_use_system_libwebp=false skia_use_system_icu=false'
-        ' skia_use_system_expat=false extra_cflags=[ \\"/MDd\\" ]"')
-    if not run_cmd(cmd):
-        run_cmd("third_party/ninja/ninja.exe -C out/win/x64/clang_debug")
-        copy_and_publish("out/win/x64/clang_debug", "skia_win_x64_clang_debug", "*.lib")
+    if K_BUILD_WITH_CLANG_ON_WINDOWS:
+        # X64 CLANG DEBUG
+        cmd = (
+            'bin/gn gen out/win/x64/clang_debug --args="clang_win=\\"C:\\\Program Files\\\LLVM\\"'
+            ' skia_use_system_libjpeg_turbo=false skia_use_system_zlib=false skia_use_system_harfbuzz=false'
+            ' skia_use_system_libpng=false skia_use_system_libwebp=false skia_use_system_icu=false'
+            ' skia_use_system_expat=false extra_cflags=[ \\"/MDd\\" ]"')
+        if not run_cmd(cmd):
+            run_cmd("third_party/ninja/ninja.exe -C out/win/x64/clang_debug")
+            copy_and_publish("out/win/x64/clang_debug", "skia_win_x64_clang_debug", "*.lib")
 
-    # X64 clang RELEASE
-    cmd = (
-        'bin/gn gen out/win/x64/clang_release --args="is_official_build=true clang_win=\\"C:\\\Program Files\\\LLVM\\" '
-        ' skia_use_system_libjpeg_turbo=false skia_use_system_zlib=false skia_use_system_harfbuzz=false'
-        ' skia_use_system_libpng=false skia_use_system_libwebp=false skia_use_system_icu=false'
-        ' skia_use_system_expat=false extra_cflags=[ \\"/MD\\" ]"')
-    if not run_cmd(cmd):
-        run_cmd("third_party/ninja/ninja.exe -C out/win/x64/clang_release")
-        copy_and_publish("out/win/x64/clang_release", "skia_win_x64_clang_release", "*.lib")
+        # X64 clang RELEASE
+        cmd = (
+            'bin/gn gen out/win/x64/clang_release --args="is_official_build=true clang_win=\\"C:\\\Program Files\\\LLVM\\" '
+            ' skia_use_system_libjpeg_turbo=false skia_use_system_zlib=false skia_use_system_harfbuzz=false'
+            ' skia_use_system_libpng=false skia_use_system_libwebp=false skia_use_system_icu=false'
+            ' skia_use_system_expat=false extra_cflags=[ \\"/MD\\" ]"')
+        if not run_cmd(cmd):
+            run_cmd("third_party/ninja/ninja.exe -C out/win/x64/clang_release")
+            copy_and_publish("out/win/x64/clang_release", "skia_win_x64_clang_release", "*.lib")
 
 
 def build_for_linux():
@@ -292,7 +294,7 @@ def build_skia():
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
     setup_global_variables()
-    if K_IS_WINDOWS:
+    if K_IS_WINDOWS and K_BUILD_WITH_CLANG_ON_WINDOWS:
         install_clang()
     build_skia()
 
