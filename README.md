@@ -4,4 +4,4 @@
 
 [![Build skia on windows](https://github.com/sanjuchopracool/skia_prebuilt/actions/workflows/build_windows.yml/badge.svg)](https://github.com/sanjuchopracool/skia_prebuilt/actions/workflows/build_windows.yml)
 # skia_prebuilt
-checking github actions to build skia
+python script  insdie scripts/main.py is used for building.
