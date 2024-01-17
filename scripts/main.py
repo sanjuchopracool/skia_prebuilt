@@ -148,14 +148,17 @@ def clone_skia():
     # check_output("bin/fetch-ninja", shell=True, stderr=STDOUT)
 
 
-def copy_and_publish(source_dir, destination_dir, lib_filter):
+def copy_and_publish(source_dir, destination_dir, lib_filter, delete_destination=True, skip_header=False, skip_package=False):
     source_dir = source_dir.strip()
-    if os.path.exists(destination_dir) and os.path.isdir(destination_dir):
-        shutil.rmtree(destination_dir)
+    if delete_destination:
+        if os.path.exists(destination_dir) and os.path.isdir(destination_dir):
+            shutil.rmtree(destination_dir)
 
-    out_dir = destination_dir + "/include"
-    shutil.copytree(k_SKIA_INCLUDE_PATH, out_dir)
-    print(f"copying include files from {k_SKIA_INCLUDE_PATH} to {out_dir}")
+    if not skip_header:
+        out_dir = destination_dir + "/include"
+        print(f"copying include files from {k_SKIA_INCLUDE_PATH} to {out_dir}")
+        shutil.copytree(k_SKIA_INCLUDE_PATH, out_dir)
+
     index_of_first_slash = source_dir.find('/', 1)
     out_dir = destination_dir + "/" + source_dir[index_of_first_slash + 1:]
     os.makedirs(out_dir, exist_ok=True)
@@ -166,30 +169,31 @@ def copy_and_publish(source_dir, destination_dir, lib_filter):
             print(f"copying file from {file} to {out_dir}")
             shutil.copy2(file, out_dir)
 
-    extension = ""
-    format_str = ""
-    if K_IS_WINDOWS:
-        format_str = "zip"
-        extension = ".zip"
-    else:
-        format_str = "gztar"
-        extension = ".tar.gz"
+    if not skip_package:
+        extension = ""
+        format_str = ""
+        if K_IS_WINDOWS:
+            format_str = "zip"
+            extension = ".zip"
+        else:
+            format_str = "gztar"
+            extension = ".tar.gz"
 
-    archived = destination_dir + extension
+        archived = destination_dir + extension
 
-    if os.path.exists(archived) and os.path.isfile(archived):
-        os.remove(archived)
+        if os.path.exists(archived) and os.path.isfile(archived):
+            os.remove(archived)
 
-    compressed_file = shutil.make_archive(
-        base_name=destination_dir,  # archive file name w/o extension
-        format=format_str,  # available formats: zip, gztar, bztar, xztar, tar
-        root_dir=destination_dir  # directory to compress
-    )
+        compressed_file = shutil.make_archive(
+            base_name=destination_dir,  # archive file name w/o extension
+            format=format_str,  # available formats: zip, gztar, bztar, xztar, tar
+            root_dir=destination_dir  # directory to compress
+        )
 
-    if os.path.exists(archived) and os.path.isfile(archived):
-        print(f"Created archieve {archived}")
-    else:
-        print(f"Failed to create archieve {archived}")
+        if os.path.exists(archived) and os.path.isfile(archived):
+            print(f"Created archieve {archived}")
+        else:
+            print(f"Failed to create archieve {archived}")
 
 
 def build_for_windows():
@@ -211,7 +215,8 @@ def build_for_windows():
             ' skia_use_system_expat=false"')
         if not run_cmd(cmd):
             run_cmd("third_party/ninja/ninja.exe -v -C out/win/x64/clang_debug")
-            copy_and_publish("out/win/x64/clang_debug", "skia_win_x64_clang_debug", "*.lib")
+            copy_and_publish("out/win/x64/clang_debug", "skia_win_x64_clang_debug_and_release",
+                             "*.lib", True, True, True)
 
         # # X64 clang RELEASE
         cmd = (
@@ -230,7 +235,7 @@ def build_for_windows():
             ' skia_use_system_expat=false"')
         if not run_cmd(cmd):
             run_cmd("third_party/ninja/ninja.exe -v -C out/win/x64/clang_release")
-            copy_and_publish("out/win/x64/clang_release", "skia_win_x64_clang_release", "*.lib")
+            copy_and_publish("out/win/x64/clang_release", "skia_win_x64_clang_debug_and_release", "*.lib", False)
 
 
 def build_for_linux():
