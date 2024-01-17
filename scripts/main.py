@@ -55,8 +55,8 @@ def install_clang():
             print("LLVM is already installed!")
         else:
             print("LLVM is not installed!")
-            llvm_url = 'https://github.com/llvm/llvm-project/releases/download/llvmorg-16.0.0/LLVM-16.0.0-win64.exe'
-            llvm_download_path: str = K_DOWNLOAD_DIR + '/LLVM-16.0.0-win64.exe'
+            llvm_url = 'https://github.com/llvm/llvm-project/releases/download/llvmorg-15.0.7/LLVM-15.0.7-win64.exe'
+            llvm_download_path: str = K_DOWNLOAD_DIR + '/LLVM-15.0.7-win64.exe'
             if os.path.exists(llvm_download_path):
                 print(f"{llvm_download_path} already exist!")
             else:
