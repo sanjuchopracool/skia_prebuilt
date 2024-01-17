@@ -21,7 +21,7 @@ K_SKIA_PATH = ""
 k_SKIA_INCLUDE_PATH = ""
 k_SKIA_LIBS_PATH = ""
 K_ARCHIEVE_DIR = "skia"
-K_BUILD_WITH_CLANG_ON_WINDOWS: bool = False
+K_BUILD_WITH_CLANG_ON_WINDOWS: bool = True
 
 
 def run_cmd(cmd, in_shell=False):
@@ -193,61 +193,43 @@ def copy_and_publish(source_dir, destination_dir, lib_filter):
 
 
 def build_for_windows():
-    # X64 MSVC DEBUG
-    # cmd = ('bin/gn gen out/win/x64/msvc_debug --args="'
-    #        ' skia_use_system_libjpeg_turbo=false skia_use_system_zlib=false skia_use_system_harfbuzz=false'
-    #        ' skia_use_system_libpng=false skia_use_system_libwebp=false skia_use_system_icu=false'
-    #        ' skia_use_system_expat=false"')
-    # if not run_cmd(cmd):
-    #     run_cmd("third_party/ninja/ninja.exe -C out/win/x64/msvc_debug")
-    #
-    # # X64 MSVC RELEASE
-    # cmd = ('bin/gn gen out/win/x64/msvc --args="is_official_build=true'
-    #        ' skia_use_system_libjpeg_turbo=false skia_use_system_zlib=false skia_use_system_harfbuzz=false'
-    #        ' skia_use_system_libpng=false skia_use_system_libwebp=false skia_use_system_icu=false'
-    #        ' skia_use_system_expat=false"')
-    # if not run_cmd(cmd):
-    #     run_cmd("third_party/ninja/ninja.exe -C out/win/x64/msvc")
-
-    # X64 MSVC DEBUG
-    cmd = (
-        'bin/gn gen out/win/x64/msvc_debug --args="'
-        ' skia_use_system_libjpeg_turbo=false skia_use_system_zlib=false skia_use_system_harfbuzz=false'
-        ' skia_use_system_libpng=false skia_use_system_libwebp=false skia_use_system_icu=false'
-        ' skia_use_system_expat=false extra_cflags=[ \\"/MDd\\" ]"')
-    if not run_cmd(cmd):
-        run_cmd("third_party/ninja/ninja.exe -C out/win/x64/msvc_debug")
-        copy_and_publish("out/win/x64/msvc_debug", "skia_win_x64_msvc_debug", "*.lib")
-
-    # X64 MSVC RELEASE
-    cmd = (
-        'bin/gn gen out/win/x64/msvc_release --args="is_official_build=true'
-        ' skia_use_system_libjpeg_turbo=false skia_use_system_zlib=false skia_use_system_harfbuzz=false'
-        ' skia_use_system_libpng=false skia_use_system_libwebp=false skia_use_system_icu=false'
-        ' skia_use_system_expat=false extra_cflags=[ \\"/MD\\" ]"')
-    if not run_cmd(cmd):
-        run_cmd("third_party/ninja/ninja.exe -C out/win/x64/msvc_release")
-        copy_and_publish("out/win/x64/msvc_release", "skia_win_x64_msvc_release", "*.lib")
-
     if K_BUILD_WITH_CLANG_ON_WINDOWS:
         # X64 CLANG DEBUG
         cmd = (
-            'bin/gn gen out/win/x64/clang_debug --args="clang_win=\\"C:\\\Program Files\\\LLVM\\"'
-            ' skia_use_system_libjpeg_turbo=false skia_use_system_zlib=false skia_use_system_harfbuzz=false'
-            ' skia_use_system_libpng=false skia_use_system_libwebp=false skia_use_system_icu=false'
-            ' skia_use_system_expat=false extra_cflags=[ \\"/MDd\\" ]"')
+            r'bin/gn gen out/win/x64/clang_debug --args="'
+            ' is_official_build=true'
+            ' is_debug=false'
+            r' extra_cflags=[\"/MDd\"]'
+            r' clang_win=\"C:\Program Files\LLVM\"'
+            ' target_cpu=\\"x64\\"'
+            ' skia_use_system_libjpeg_turbo=false'
+            ' skia_use_system_zlib=false'
+            ' skia_use_system_harfbuzz=false'
+            ' skia_use_system_libpng=false'
+            ' skia_use_system_libwebp=false'
+            ' skia_use_system_icu=false'
+            ' skia_use_system_expat=false"')
         if not run_cmd(cmd):
-            run_cmd("third_party/ninja/ninja.exe -C out/win/x64/clang_debug")
+            run_cmd("third_party/ninja/ninja.exe -v -C out/win/x64/clang_debug")
             copy_and_publish("out/win/x64/clang_debug", "skia_win_x64_clang_debug", "*.lib")
 
-        # X64 clang RELEASE
+        # # X64 clang RELEASE
         cmd = (
-            'bin/gn gen out/win/x64/clang_release --args="is_official_build=true clang_win=\\"C:\\\Program Files\\\LLVM\\" '
-            ' skia_use_system_libjpeg_turbo=false skia_use_system_zlib=false skia_use_system_harfbuzz=false'
-            ' skia_use_system_libpng=false skia_use_system_libwebp=false skia_use_system_icu=false'
-            ' skia_use_system_expat=false extra_cflags=[ \\"/MD\\" ]"')
+            r'bin/gn gen out/win/x64/clang_release --args="'
+            ' is_official_build=true'
+            ' is_debug=false'
+            r' extra_cflags=[\"/MD\"]'
+            r' clang_win=\"C:\Program Files\LLVM\"'
+            ' target_cpu=\\"x64\\"'
+            ' skia_use_system_libjpeg_turbo=false'
+            ' skia_use_system_zlib=false'
+            ' skia_use_system_harfbuzz=false'
+            ' skia_use_system_libpng=false'
+            ' skia_use_system_libwebp=false'
+            ' skia_use_system_icu=false'
+            ' skia_use_system_expat=false"')
         if not run_cmd(cmd):
-            run_cmd("third_party/ninja/ninja.exe -C out/win/x64/clang_release")
+            run_cmd("third_party/ninja/ninja.exe -v -C out/win/x64/clang_release")
             copy_and_publish("out/win/x64/clang_release", "skia_win_x64_clang_release", "*.lib")
 
 
