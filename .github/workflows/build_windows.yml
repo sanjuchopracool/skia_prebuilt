@@ -16,8 +16,8 @@ jobs:
         - name: "Check out repo's default branch"
           uses: actions/checkout@v3
         - name: 'Check clang version'
-          shell: pwsh
-          run:  C:\Program Files\LLVM\bin\clang.exe --version 
+          shell: cmd
+          run:  'C:\Program Files\LLVM\bin\clang.exe --version' 
         - name: 'execute python build script'
           shell: pwsh
           run:  python -u scripts/main.py
