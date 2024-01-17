@@ -22,15 +22,15 @@ jobs:
           uses: svenstaro/upload-release-action@v2
           with:
             repo_token: ${{ secrets.GITHUB_TOKEN }}
-            file: C:\Users\runneradmin\PROJECTS\GOOGLE\skia\skia_win_x64_msvc_release.zip
-            asset_name: skia_win_x64_msvc_release.zip
+            file: C:\Users\runneradmin\PROJECTS\GOOGLE\skia\skia_win_x64_clang_release.zip
+            asset_name: skia_win_x64_clang_release.zip
             tag: refs/tags/weekly
             overwrite: true
         - name: Upload windows release binaries to releases
           uses: svenstaro/upload-release-action@v2
           with:
             repo_token: ${{ secrets.GITHUB_TOKEN }}
-            file: C:\Users\runneradmin\PROJECTS\GOOGLE\skia\skia_win_x64_msvc_debug.zip
-            asset_name: skia_win_x64_msvc_debug.zip
+            file: C:\Users\runneradmin\PROJECTS\GOOGLE\skia\skia_win_x64_clang_debug.zip
+            asset_name: skia_win_x64_clang_debug.zip
             tag: refs/tags/weekly
             overwrite: true
