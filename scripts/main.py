@@ -262,7 +262,6 @@ def build_for_mac():
     arg = '--args=is_official_build=true skia_use_system_harfbuzz=false skia_use_system_libjpeg_turbo = false  skia_use_system_libpng = false skia_use_system_icu = false cc="clang" cxx="clang++"'
     arg = arg + arg.join(K_COMMON_BUILD_ARGS)
     cmd = ["bin/gn", 'gen', out_dir_path, arg]
-    cmd.append(K_COMMON_BUILD_ARGS)
     if not run_cmd(cmd):
         cmd = ["third_party/ninja/ninja", "-C", out_dir_path]
         run_cmd(cmd)
