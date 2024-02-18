@@ -25,11 +25,14 @@ jobs:
         - name: 'execute python build script'
           shell: pwsh
           run:  python -u scripts/main.py
+        - name: Get current date
+          id: date
+          run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
         - name: Upload windows debug and release binaries to releases
           uses: svenstaro/upload-release-action@v2
           with:
             repo_token: ${{ secrets.GITHUB_TOKEN }}
             file: C:\Users\runneradmin\PROJECTS\GOOGLE\skia\skia_win_x64_clang_debug_and_release.zip
             asset_name: skia_win_x64_clang_debug_and_release.zip
-            tag: refs/tags/weekly
+            tag: refs/tags/weekly-${{ steps.date.outputs.date }}
             overwrite: true
