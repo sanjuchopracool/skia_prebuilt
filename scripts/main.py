@@ -22,7 +22,7 @@ k_SKIA_INCLUDE_PATH = ""
 k_SKIA_LIBS_PATH = ""
 K_ARCHIEVE_DIR = "skia"
 K_BUILD_WITH_CLANG_ON_WINDOWS: bool = True
-
+K_COMMON_BUILD_ARGS = [' skia_use_system_libwebp=false ']
 
 def run_cmd(cmd, in_shell=False):
     my_env = os.environ.copy()
@@ -158,6 +158,10 @@ def copy_and_publish(source_dir, destination_dir, lib_filter, delete_destination
         out_dir = destination_dir + "/include"
         print(f"copying include files from {k_SKIA_INCLUDE_PATH} to {out_dir}")
         shutil.copytree(k_SKIA_INCLUDE_PATH, out_dir)
+        libweb_dir = K_SKIA_PATH + "/third_party/externals/libwebp/src/webp/"
+        out_dir = destination_dir + "/libwebp/"
+        print(f"copying include files from {libweb_dir} to {out_dir}")
+        shutil.copytree(libweb_dir, out_dir)
 
     index_of_first_slash = source_dir.find('/', 1)
     out_dir = destination_dir + "/" + source_dir[index_of_first_slash + 1:]
@@ -241,8 +245,10 @@ def build_for_windows():
 def build_for_linux():
     global k_SKIA_LIBS_PATH
     out_dir_path = "out/linux/x64/clang_release"
-    cmd = ["bin/gn", 'gen', out_dir_path,
-           '--args=is_official_build=true skia_use_system_harfbuzz=false cc="clang" cxx="clang++"']
+    arg = '--args=is_official_build=true skia_use_system_harfbuzz=false cc="clang" cxx="clang++" '
+    arg = arg + arg.join(K_COMMON_BUILD_ARGS)
+    cmd = ["bin/gn", 'gen', out_dir_path, arg]
+
     if not run_cmd(cmd):
         cmd = ["third_party/ninja/ninja", "-C", out_dir_path]
         run_cmd(cmd)
@@ -253,8 +259,10 @@ def build_for_linux():
 def build_for_mac():
     global k_SKIA_LIBS_PATH
     out_dir_path = "out/macos/x64/clang_release"
-    cmd = ["bin/gn", 'gen', out_dir_path,
-           '--args=is_official_build=true skia_use_system_harfbuzz=false skia_use_system_libjpeg_turbo = false skia_use_system_libwebp = false skia_use_system_libpng = false skia_use_system_icu = false cc="clang" cxx="clang++"']
+    arg = '--args=is_official_build=true skia_use_system_harfbuzz=false skia_use_system_libjpeg_turbo = false  skia_use_system_libpng = false skia_use_system_icu = false cc="clang" cxx="clang++"'
+    arg = arg + arg.join(K_COMMON_BUILD_ARGS)
+    cmd = ["bin/gn", 'gen', out_dir_path, arg]
+    cmd.append(K_COMMON_BUILD_ARGS)
     if not run_cmd(cmd):
         cmd = ["third_party/ninja/ninja", "-C", out_dir_path]
         run_cmd(cmd)
