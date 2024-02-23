@@ -259,7 +259,7 @@ def build_for_linux():
 def build_for_mac():
     global k_SKIA_LIBS_PATH
     out_dir_path = "out/macos/x64/clang_release"
-    arg = '--args=is_official_build=true skia_use_system_harfbuzz=false skia_use_system_libjpeg_turbo = false  skia_use_system_libpng = false skia_use_system_icu = false cc="clang" cxx="clang++"'
+    arg = '--args=is_official_build=true skia_use_system_harfbuzz=false skia_use_system_libjpeg_turbo=false  skia_use_system_libpng=false skia_use_system_icu = false cc="clang" cxx="clang++"'
     arg = arg + arg.join(K_COMMON_BUILD_ARGS)
     cmd = ["bin/gn", 'gen', out_dir_path, arg]
     if not run_cmd(cmd):
@@ -267,6 +267,16 @@ def build_for_mac():
         run_cmd(cmd)
         k_SKIA_LIBS_PATH = K_SKIA_PATH + out_dir_path
         copy_and_publish(out_dir_path, "skia_macos_x64_clang_release", "*.a")
+
+    out_dir_path = "out/macos/arm64/clang_release"
+    arg = '--args=is_official_build=true skia_use_system_harfbuzz=false skia_use_system_libjpeg_turbo=false skia_use_system_libpng=false skia_use_system_icu = false cc="clang" cxx="clang++" target_cpu="arm64"'
+    arg = arg + arg.join(K_COMMON_BUILD_ARGS)
+    cmd = ["bin/gn", 'gen', out_dir_path, arg]
+    if not run_cmd(cmd):
+        cmd = ["third_party/ninja/ninja", "-C", out_dir_path]
+        run_cmd(cmd)
+        k_SKIA_LIBS_PATH = K_SKIA_PATH + out_dir_path
+        copy_and_publish(out_dir_path, "skia_macos_arm64_clang_release", "*.a")
 
 
 def compile_skia():
