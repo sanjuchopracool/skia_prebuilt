@@ -1,0 +1,31 @@
+name: 'Build skia on mac'
+on:
+    workflow_dispatch:
+    schedule:
+        - cron: "0 0 * * 6"
+    
+permissions:
+  contents: write
+  issues: write
+  
+jobs:
+  setup_depot_tools_and_build_skia:
+    name: 'Setup depot tools and build skia'
+    runs-on: macos-14
+    steps:
+        - name: "Check out repo's default branch"
+          uses: actions/checkout@v3
+        - name: 'execute python build script'
+          run:  python3 -u scripts/main.py
+          shell: sh
+        - name: Get current date
+          id: date
+          run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
+        - name: Upload  arm64 binaries to release
+          uses: svenstaro/upload-release-action@v2
+          with:
+            repo_token: ${{ secrets.GITHUB_TOKEN }}
+            file: /Users/runner/PROJECTS/GOOGLE/skia/skia_macos_arm64_clang_release.tar.gz
+            asset_name: skia_macos_arm64_clang_release.tar.gz
+            tag: refs/tags/weekly-${{ steps.date.outputs.date }}
+            overwrite: true
