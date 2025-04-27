@@ -12,6 +12,8 @@ from pathlib import Path
 from subprocess import check_output, STDOUT
 import glob, shutil
 import zipfile
+import argparse
+
 
 K_IS_WINDOWS: bool = False
 K_DOWNLOAD_DIR = ""
@@ -292,17 +294,25 @@ def compile_skia():
         build_for_mac()
 
 
-def build_skia():
-    clone_depot_tools()
-    clone_skia()
+def build_skia(build_only):
+    if not build_only:
+        clone_depot_tools()
+        clone_skia()
     compile_skia()
 
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
+        # Create an ArgumentParser object
+    parser = argparse.ArgumentParser(description='Skia build.')
+    # Add a boolean argument
+    parser.add_argument('--build_only', type=bool, required=False, help='build only, do not sync')
+    # Parse the command line arguments
+    args = parser.parse_args()
+
     setup_global_variables()
     if K_IS_WINDOWS and K_BUILD_WITH_CLANG_ON_WINDOWS:
         install_clang()
-    build_skia()
+    build_skia(args.build_only)
 
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/
