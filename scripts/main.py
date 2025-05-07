@@ -24,7 +24,14 @@ k_SKIA_INCLUDE_PATH = ""
 k_SKIA_LIBS_PATH = ""
 K_ARCHIEVE_DIR = "skia"
 K_BUILD_WITH_CLANG_ON_WINDOWS: bool = True
-K_COMMON_BUILD_ARGS = [' skia_use_system_libwebp=false ']
+K_COMMON_BUILD_ARGS = [' skia_use_system_libwebp=false ',
+                        ' skia_use_system_libjpeg_turbo=false',
+                        ' skia_use_system_zlib=false',
+                        ' skia_use_system_harfbuzz=false',
+                        ' skia_use_system_libpng=false',
+                        ' skia_use_system_libwebp=false',
+                        ' skia_use_system_icu=false',
+                        ' skia_use_system_expat=false']
 
 def run_cmd(cmd, in_shell=False):
     my_env = os.environ.copy()
