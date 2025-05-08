@@ -253,7 +253,7 @@ def build_for_windows():
 def build_for_linux():
     global k_SKIA_LIBS_PATH
     out_dir_path = "out/linux/x64/clang_release"
-    arg = ['--args=is_official_build=true  cc="clang" cxx="clang++" ']
+    arg = '--args=is_official_build=true  cc="clang" cxx="clang++" '
     arg = arg + " ".join(K_COMMON_BUILD_ARGS)
     cmd = ["bin/gn", 'gen', out_dir_path, arg]
 
