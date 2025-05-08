@@ -29,7 +29,6 @@ K_COMMON_BUILD_ARGS = [' skia_use_system_libwebp=false ',
                         ' skia_use_system_zlib=false',
                         ' skia_use_system_harfbuzz=false',
                         ' skia_use_system_libpng=false',
-                        ' skia_use_system_libwebp=false',
                         ' skia_use_system_icu=false',
                         ' skia_use_system_expat=false']
 
@@ -254,7 +253,7 @@ def build_for_windows():
 def build_for_linux():
     global k_SKIA_LIBS_PATH
     out_dir_path = "out/linux/x64/clang_release"
-    arg = '--args=is_official_build=true skia_use_system_harfbuzz=false cc="clang" cxx="clang++" '
+    arg = '--args=is_official_build=true  cc="clang" cxx="clang++" '
     arg = arg + arg.join(K_COMMON_BUILD_ARGS)
     cmd = ["bin/gn", 'gen', out_dir_path, arg]
 
@@ -270,7 +269,7 @@ def build_for_mac():
 
     if platform.machine() == "arm64":
             out_dir_path = "out/macos/arm64/clang_release"
-            arg = '--args=is_official_build=true skia_use_system_harfbuzz=false skia_use_system_libjpeg_turbo=false skia_use_system_libpng=false skia_use_system_icu = false cc="clang" cxx="clang++" target_cpu="arm64"'
+            arg = '--args=is_official_build=true  cc="clang" cxx="clang++" target_cpu="arm64"'
             arg = arg + arg.join(K_COMMON_BUILD_ARGS)
             cmd = ["bin/gn", 'gen', out_dir_path, arg]
             if not run_cmd(cmd):
@@ -281,7 +280,7 @@ def build_for_mac():
             return
 
     out_dir_path = "out/macos/x64/clang_release"
-    arg = '--args=is_official_build=true skia_use_system_harfbuzz=false skia_use_system_libjpeg_turbo=false  skia_use_system_libpng=false skia_use_system_icu = false cc="clang" cxx="clang++"'
+    arg = '--args=is_official_build=true cc="clang" cxx="clang++"'
     arg = arg + arg.join(K_COMMON_BUILD_ARGS)
     cmd = ["bin/gn", 'gen', out_dir_path, arg]
     if not run_cmd(cmd):
