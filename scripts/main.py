@@ -270,7 +270,7 @@ def build_for_mac():
     if platform.machine() == "arm64":
             out_dir_path = "out/macos/arm64/clang_release"
             arg = '--args=is_official_build=true  cc="clang" cxx="clang++" target_cpu="arm64"'
-            arg = arg + arg.join(K_COMMON_BUILD_ARGS)
+            arg = arg + " ".join(K_COMMON_BUILD_ARGS)
             cmd = ["bin/gn", 'gen', out_dir_path, arg]
             if not run_cmd(cmd):
                 cmd = ["third_party/ninja/ninja", "-C", out_dir_path]
