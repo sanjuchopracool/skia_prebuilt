@@ -1,4 +1,4 @@
-[![Build skia on mac_arm64](https://github.com/sanjuchopracool/skia_prebuilt/actions/workflows/build_mac_arm64.yml/badge.svg)](https://github.com/sanjuchopracool/skia_prebuilt/actions/workflows/build_mac_arm64.yml)
+[![Build skia on mac arm64](https://github.com/sanjuchopracool/skia_prebuilt/actions/workflows/build_mac_arm64.yaml/badge.svg)](https://github.com/sanjuchopracool/skia_prebuilt/actions/workflows/build_mac_arm64.yaml)
 
 [![Build skia on ubuntu](https://github.com/sanjuchopracool/skia_prebuilt/actions/workflows/build_ubuntu.yml/badge.svg)](https://github.com/sanjuchopracool/skia_prebuilt/actions/workflows/build_ubuntu.yml)
 
