@@ -132,15 +132,15 @@ def clone_skia():
         inShell = K_IS_WINDOWS
         cmd = ["python3", "tools/git-sync-deps"]
 
-        if K_IS_WINDOWS:
-            os.environ["EMSDK"] = K_SKIA_PATH + "/third_party/externals/emsdk"
-            os.environ["EMSDK_NODE"] = K_SKIA_PATH + "/third_party/externals/emsdk/node/16.20.0_64bit/bin"
-            os.environ["EMSDK_PYTHON"] = K_SKIA_PATH + "/third_party/externals/emsdk/upstream/emscripten"
-            os.environ["PATH"] = K_SKIA_PATH + "/third_party/externals/emsdk" + os.pathsep + os.environ["PATH"]
-            os.environ["PATH"] = K_SKIA_PATH + "/third_party/externals/emsdk/node/16.20.0_64bit/bin" + os.pathsep + \
-                                 os.environ["PATH"]
-            os.environ["PATH"] = K_SKIA_PATH + "/third_party/externals/emsdk/upstream/emscripten" + os.pathsep + \
-                                 os.environ["PATH"]
+        # if K_IS_WINDOWS:
+        #     os.environ["EMSDK"] = K_SKIA_PATH + "/third_party/externals/emsdk"
+        #     os.environ["EMSDK_NODE"] = K_SKIA_PATH + "/third_party/externals/emsdk/node/16.20.0_64bit/bin"
+        #     os.environ["EMSDK_PYTHON"] = K_SKIA_PATH + "/third_party/externals/emsdk/upstream/emscripten"
+        #     os.environ["PATH"] = K_SKIA_PATH + "/third_party/externals/emsdk" + os.pathsep + os.environ["PATH"]
+        #     os.environ["PATH"] = K_SKIA_PATH + "/third_party/externals/emsdk/node/16.20.0_64bit/bin" + os.pathsep + \
+        #                          os.environ["PATH"]
+        #     os.environ["PATH"] = K_SKIA_PATH + "/third_party/externals/emsdk/upstream/emscripten" + os.pathsep + \
+        #                          os.environ["PATH"]
 
         if run_cmd(cmd, inShell):
             run_cmd(["python3", "tools/git-sync-deps"], inShell)
